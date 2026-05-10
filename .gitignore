@@ -6,4 +6,4 @@ db.sqlite3
 media/
 static/vendor/
 *.map
-
+static/img/
