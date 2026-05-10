@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "manage.py",
+      "src": "medicinal/wsgi.py",
       "use": "@vercel/python"
     }
   ],
@@ -17,7 +17,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "manage.py"
+      "dest": "medicinal/wsgi.py"
     }
   ]
 }
