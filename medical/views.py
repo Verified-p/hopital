@@ -474,53 +474,53 @@ def ai_analysis_page(request):
     return render(request, "ai_analysis.html")
 
 
-@csrf_exempt
-def ai_analysis(request):
-    """Handles both GET and POST for AI analysis."""
-    if request.method == "GET":
-        return render(request, "ai_analysis.html")
+# @csrf_exempt
+# def ai_analysis(request):
+#     """Handles both GET and POST for AI analysis."""
+#     if request.method == "GET":
+#         return render(request, "ai_analysis.html")
 
-    if request.method != "POST":
-        return JsonResponse({"error": "Invalid request method."}, status=405)
+#     if request.method != "POST":
+#         return JsonResponse({"error": "Invalid request method."}, status=405)
 
-    try:
-        data = json.loads(request.body.decode("utf-8"))
-        temperature = data.get("temperature")
-        heart_rate = data.get("heart_rate")
-        systolic = data.get("systolic")
-        diastolic = data.get("diastolic")
-        symptoms = data.get("symptoms")
+#     try:
+#         data = json.loads(request.body.decode("utf-8"))
+#         temperature = data.get("temperature")
+#         heart_rate = data.get("heart_rate")
+#         systolic = data.get("systolic")
+#         diastolic = data.get("diastolic")
+#         symptoms = data.get("symptoms")
 
-        if not all([temperature, heart_rate, systolic, diastolic]):
-            return JsonResponse({"error": "Please fill in all required fields."}, status=400)
+#         if not all([temperature, heart_rate, systolic, diastolic]):
+#             return JsonResponse({"error": "Please fill in all required fields."}, status=400)
 
-        prompt = f"""
-        The patient provided:
-        - Temperature: {temperature}°C
-        - Heart Rate: {heart_rate} bpm
-        - Blood Pressure: {systolic}/{diastolic} mmHg
-        - Symptoms: {symptoms}
+#         prompt = f"""
+#         The patient provided:
+#         - Temperature: {temperature}°C
+#         - Heart Rate: {heart_rate} bpm
+#         - Blood Pressure: {systolic}/{diastolic} mmHg
+#         - Symptoms: {symptoms}
 
-        As a virtual medical assistant:
-        1. Analyze these readings.
-        2. Explain what they might mean.
-        3. Suggest next steps or treatments.
-        4. Warn if the situation seems urgent.
-        """
+#         As a virtual medical assistant:
+#         1. Analyze these readings.
+#         2. Explain what they might mean.
+#         3. Suggest next steps or treatments.
+#         4. Warn if the situation seems urgent.
+#         """
 
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": "You are a friendly and accurate AI medical assistant."},
-                {"role": "user", "content": prompt}
-            ]
-        )
+#         response = client.chat.completions.create(
+#             model="gpt-4o-mini",
+#             messages=[
+#                 {"role": "system", "content": "You are a friendly and accurate AI medical assistant."},
+#                 {"role": "user", "content": prompt}
+#             ]
+#         )
 
-        analysis = response.choices[0].message.content.strip()
-        return JsonResponse({"analysis": analysis})
+#         analysis = response.choices[0].message.content.strip()
+#         return JsonResponse({"analysis": analysis})
 
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+#     except Exception as e:
+#         return JsonResponse({"error": str(e)}, status=500)
 @login_required
 def schedule_shot(request):
     if request.method == 'POST':
