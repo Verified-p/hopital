@@ -1,8 +1,8 @@
 from pathlib import Path
 import os
 
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -103,17 +103,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
-# ---------------- ENV VARIABLES ----------------
-MPESA_CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
-MPESA_CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
-MPESA_SHORTCODE = os.getenv("MPESA_SHORTCODE", "174379")
-MPESA_PASSKEY = os.getenv("MPESA_PASSKEY")
-MPESA_CALLBACK_URL = os.getenv(
-    "MPESA_CALLBACK_URL",
-    "https://your-domain.vercel.app/mpesa/callback/"
-)
+# # ---------------- ENV VARIABLES ----------------
+# MPESA_CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
+# MPESA_CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
+# MPESA_SHORTCODE = os.getenv("MPESA_SHORTCODE", "174379")
+# MPESA_PASSKEY = os.getenv("MPESA_PASSKEY")
+# MPESA_CALLBACK_URL = os.getenv(
+#     "MPESA_CALLBACK_URL",
+#     "https://your-domain.vercel.app/mpesa/callback/"
+# )
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 # ---------------- LOGIN ----------------
