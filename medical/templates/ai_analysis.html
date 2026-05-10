@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5 text-center" style="max-width: 700px;">
+  <h2 class="mb-3">🧠 AI Health Analysis</h2>
+  <p class="text-muted">Enter your details or use simulated sensor data to get instant AI analysis.</p>
+
+  <div class="card shadow p-4 mt-4">
+    <div class="form-group mb-3">
+      <label>Temperature (°C)</label>
+      <input type="number" id="temperature" class="form-control" placeholder="e.g. 36.7" step="0.1" />
+    </div>
+    <div class="form-group mb-3">
+      <label>Heart Rate (bpm)</label>
+      <input type="number" id="heart_rate" class="form-control" placeholder="e.g. 75" />
+    </div>
+    <div class="form-group mb-3">
+      <label>Blood Pressure (mmHg)</label>
+      <div class="d-flex gap-2">
+        <input type="number" id="systolic" class="form-control" placeholder="Systolic (e.g. 120)" />
+        <input type="number" id="diastolic" class="form-control" placeholder="Diastolic (e.g. 80)" />
+      </div>
+    </div>
+    <div class="form-group mb-3">
+      <label>Symptoms</label>
+      <textarea id="symptoms" class="form-control" rows="3" placeholder="Describe how you feel..."></textarea>
+    </div>
+
+    <div class="d-grid gap-2">
+      <button id="simulateBtn" class="btn btn-outline-primary">📟 Use Sensor Data</button>
+      <button id="analyzeBtn" class="btn btn-success">🔍 Analyze with AI</button>
+    </div>
+  </div>
+
+  <!-- Modal for Result -->
+  <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title">AI Health Analysis Result</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p id="analysisText">🧠 Processing...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 🎯 Simulate sensor readings
+document.getElementById("simulateBtn").addEventListener("click", () => {
+  const temperature = (35.5 + Math.random() * 3).toFixed(1); // 35.5–38.5°C
+  const heart_rate = Math.floor(60 + Math.random() * 40);    // 60–100 bpm
+  const systolic = Math.floor(110 + Math.random() * 20);     // 110–130
+  const diastolic = Math.floor(70 + Math.random() * 15);     // 70–85
+
+  document.getElementById("temperature").value = temperature;
+  document.getElementById("heart_rate").value = heart_rate;
+  document.getElementById("systolic").value = systolic;
+  document.getElementById("diastolic").value = diastolic;
+
+  const sensorMsg = `🌡️ Sensor captured:
+  Temp: ${temperature}°C, HR: ${heart_rate} bpm, BP: ${systolic}/${diastolic} mmHg`;
+  alert(sensorMsg);
+});
+
+// ✅ Function to clean AI text before display or speech
+function cleanText(text) {
+  return text
+    .replace(/\*\*/g, '')      // remove bold markdown
+    .replace(/#+/g, '')        // remove headings
+    .replace(/\*/g, '')        // remove stray asterisks
+    .replace(/[-_]{2,}/g, '')  // remove multiple dashes or underscores
+    .replace(/\n{2,}/g, '\n')  // normalize new lines
+    .trim();
+}
+
+// 🧠 Analyze button logic
+document.getElementById("analyzeBtn").addEventListener("click", async () => {
+  const data = {
+    temperature: document.getElementById("temperature").value,
+    heart_rate: document.getElementById("heart_rate").value,
+    systolic: document.getElementById("systolic").value,
+    diastolic: document.getElementById("diastolic").value,
+    symptoms: document.getElementById("symptoms").value,
+  };
+
+  const modal = new bootstrap.Modal(document.getElementById("resultModal"));
+  modal.show();
+  document.getElementById("analysisText").innerHTML = "🧠 Analyzing your health data...";
+
+  try {
+    const res = await fetch("{% url 'ai_analysis' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+    if (result.analysis) {
+      const cleanResult = cleanText(result.analysis);
+      document.getElementById("analysisText").innerHTML = cleanResult.replace(/\n/g, "<br>");
+      
+      const speak = new SpeechSynthesisUtterance(cleanResult);
+      speak.rate = 1.0;
+      speechSynthesis.speak(speak);
+    } else {
+      document.getElementById("analysisText").innerHTML = "❌ " + (result.error || "Unknown error occurred.");
+    }
+  } catch (err) {
+    document.getElementById("analysisText").innerHTML = "❌ Connection error: " + err.message;
+  }
+});
+</script>
+{% endblock %}

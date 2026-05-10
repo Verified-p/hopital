@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<section style="display:flex;justify-content:center;align-items:center;min-height:100vh;background-color:#f4f6f9;">
+  <div style="width:400px;background:#fff;padding:30px;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+    <h2 style="text-align:center;color:#1e40af;font-weight:700;margin-bottom:20px;">Welcome Back</h2>
+
+    {% if error %}
+      <p style="color:red;text-align:center;margin-bottom:15px;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="">
+      {% csrf_token %}
+
+      <div style="margin-bottom:15px;">
+        <label style="display:block;font-weight:600;color:#555;margin-bottom:5px;">Username</label>
+        <input type="text" name="username" placeholder="Enter your username" required 
+          style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;outline:none;font-size:14px;">
+      </div>
+
+      <div style="margin-bottom:20px;position:relative;">
+        <label style="display:block;font-weight:600;color:#555;margin-bottom:5px;">Password</label>
+        <input id="password" type="password" name="password" placeholder="Enter password" required 
+          style="width:100%;padding:10px 35px 10px 10px;border:1px solid #ccc;border-radius:8px;outline:none;font-size:14px;">
+        <span onclick="togglePassword('password', this)" 
+          style="position:absolute;right:10px;top:36px;cursor:pointer;color:#666;">
+          <i class="bi bi-eye-slash"></i>
+        </span>
+      </div>
+
+      <button type="submit"
+        style="width:100%;padding:10px;background-color:#1e40af;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">
+        Sign In
+      </button>
+
+      <p style="text-align:center;margin-top:15px;color:#555;">Don’t have an account?
+        <a href="{% url 'signup' %}" style="color:#1e40af;text-decoration:none;font-weight:600;">Create one</a>
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+function togglePassword(id, icon) {
+  const input = document.getElementById(id);
+  const isPassword = input.type === "password";
+  input.type = isPassword ? "text" : "password";
+  icon.innerHTML = isPassword ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main class="main">
+  <div class="page-title text-center py-4 bg-light">
+    <div class="container">
+      <h1>Patient Records</h1>
+      <p class="text-muted">List of patients who have visited the facility.</p>
+    </div>
+  </div>
+
+  <section class="section py-4">
+    <div class="container">
+      <div class="mb-3 text-end">
+        {% if request.user.is_staff %}
+          <a href="{% url 'create_record' %}" class="btn btn-primary">Add Patient Record</a>
+        {% endif %}
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Patient</th>
+              <th>Phone</th>
+              <th>Reason</th>
+              <th>Doctor</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in records %}
+            <tr id="record-row-{{ r.id }}">
+              <td>{{ r.first_name }} {{ r.last_name }}<br><small class="text-muted">{{ r.email }}</small></td>
+              <td>{{ r.phone }}</td>
+              <td>{{ r.reason_for_visit }}</td>
+              <td>{% if r.attending_doctor %}{{ r.attending_doctor.get_full_name|default:r.attending_doctor.username }}{% endif %}</td>
+              <td id="time-in-{{ r.id }}">{{ r.time_in|date:"Y-m-d H:i:s" }}</td>
+              <td id="time-out-{{ r.id }}">
+                {% if r.time_out %}
+                  {{ r.time_out|date:"Y-m-d H:i:s" }}
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if not r.time_out %}
+                  {% if request.user.is_authenticated %}
+                    <button class="btn btn-sm btn-success checkout-btn" data-id="{{ r.id }}">Check Out</button>
+                  {% else %}
+                    <a href="{% url 'login' %}?next={% url 'records_list' %}" class="btn btn-sm btn-warning">Login to Check Out</a>
+                  {% endif %}
+                {% else %}
+                  <span class="badge bg-secondary">Checked Out</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="text-center">No records yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="checkoutModalLabel">Thank you for visiting us</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to check out now?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelCheckout" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="confirmCheckout" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  let selectedRecordId = null;
+  const checkoutModalEl = document.getElementById('checkoutModal');
+  const bsModal = bootstrap.Modal.getOrCreateInstance(checkoutModalEl);
+
+  // Open modal when checkout button clicked
+  document.querySelectorAll('.checkout-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      selectedRecordId = this.dataset.id;
+      bsModal.show();
+    });
+  });
+
+  // Confirm checkout
+  document.getElementById('confirmCheckout').addEventListener('click', function() {
+    if (!selectedRecordId) return;
+    const url = '{% url "checkout_record" pk=0 %}'.replace('/0/', '/' + selectedRecordId + '/');
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})  // no body needed
+    }).then(res => res.json())
+      .then(data => {
+        if (data.status === 'ok' || data.status === 'already') {
+          // Update time-out cell
+          const timeOutCell = document.getElementById('time-out-' + selectedRecordId);
+          const dt = new Date(data.time_out);
+          const formatted = dt.getFullYear() + '-' +
+            String(dt.getMonth()+1).padStart(2,'0') + '-' +
+            String(dt.getDate()).padStart(2,'0') + ' ' +
+            String(dt.getHours()).padStart(2,'0') + ':' +
+            String(dt.getMinutes()).padStart(2,'0') + ':' +
+            String(dt.getSeconds()).padStart(2,'0');
+          timeOutCell.innerText = formatted;
+
+          // Replace button with badge
+          const row = document.getElementById('record-row-' + selectedRecordId);
+          const lastCell = row.querySelector('td:last-child');
+          lastCell.innerHTML = '<span class="badge bg-secondary">Checked Out</span>';
+        } else {
+          alert('Could not check out: ' + (data.error || 'unknown'));
+        }
+        bsModal.hide();
+        selectedRecordId = null;
+      })
+      .catch(err => {
+        console.error(err);
+        alert('An error occurred while checking out.');
+        bsModal.hide();
+        selectedRecordId = null;
+      });
+  });
+});
+</script>
+{% endblock %}

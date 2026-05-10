@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1 class="heading-title">Book an Appointment</h1>
+            <p class="mb-0">
+              Schedule your consultation easily and securely with our online booking system. 
+              Whether it’s a routine check-up or a specialist visit, we’re here to make healthcare 
+              more accessible and convenient for you.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">Appointment</li>
+        </ol>
+      </div>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <!-- Appointment Section -->
+  <section id="appointment" class="appointment section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row gy-4">
+
+        <!-- Appointment Info -->
+        <div class="col-lg-6">
+          <div class="appointment-info">
+            <h3>Fast & Reliable Healthcare Scheduling</h3>
+            <p class="mb-4">
+              Book your appointment anytime, from anywhere. Our doctors and medical specialists 
+              are available to ensure you receive prompt, high-quality care tailored to your needs.
+            </p>
+
+            <div class="info-items">
+              <div class="info-item d-flex align-items-center mb-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon-wrapper me-3">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div>
+                  <h5>Flexible Booking</h5>
+                  <p class="mb-0">Choose a date and time that fits perfectly into your schedule</p>
+                </div>
+              </div>
+
+              <div class="info-item d-flex align-items-center mb-3" data-aos="fade-up" data-aos-delay="250">
+                <div class="icon-wrapper me-3">
+                  <i class="bi bi-stopwatch"></i>
+                </div>
+                <div>
+                  <h5>Instant Confirmation</h5>
+                  <p class="mb-0">Receive a booking confirmation via email or SMS in minutes</p>
+                </div>
+              </div>
+
+              <div class="info-item d-flex align-items-center mb-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon-wrapper me-3">
+                  <i class="bi bi-heart-pulse"></i>
+                </div>
+                <div>
+                  <h5>Trusted Experts</h5>
+                  <p class="mb-0">Consult with certified healthcare professionals and specialists</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="emergency-contact mt-4" data-aos="fade-up" data-aos-delay="350">
+              <div class="emergency-card p-3">
+                <h6 class="mb-2"><i class="bi bi-telephone-fill me-2"></i>Emergency Hotline</h6>
+                <p class="mb-0">For emergencies, call <strong>+254 700 123 456</strong> — available 24/7</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- End Appointment Info -->
+
+        <!-- Appointment Form -->
+        <div class="col-lg-6">
+          <div class="appointment-form-wrapper" data-aos="fade-up" data-aos-delay="200">
+            <form action="" method="post" class="appointment-form">
+              {% csrf_token %}
+              <div class="row gy-3">
+
+                <div class="col-md-6">
+                  <input type="text" name="name" class="form-control" placeholder="Your Full Name" required>
+                </div>
+
+                <div class="col-md-6">
+                  <input type="email" name="email" class="form-control" placeholder="Your Email Address" required>
+                </div>
+
+                <div class="col-md-6">
+                  <input type="tel" name="phone" class="form-control" placeholder="Your Phone Number" required>
+                </div>
+
+                <div class="col-md-6">
+                  <select name="department" class="form-select" required>
+                    <option value="">Select Department</option>
+                    <option value="cardiology">Cardiology</option>
+                    <option value="neurology">Neurology</option>
+                    <option value="orthopedics">Orthopedics</option>
+                    <option value="pediatrics">Pediatrics</option>
+                    <option value="dermatology">Dermatology</option>
+                    <option value="general">General Medicine</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <input type="date" name="date" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                  <select name="doctor" class="form-select" required>
+                    <option value="">Select Doctor</option>
+                    <option value="dr-johnson">Dr. Sarah Johnson</option>
+                    <option value="dr-martinez">Dr. Michael Martinez</option>
+                    <option value="dr-chen">Dr. Lisa Chen</option>
+                    <option value="dr-patel">Dr. Raj Patel</option>
+                    <option value="dr-williams">Dr. Emily Williams</option>
+                    <option value="dr-thompson">Dr. David Thompson</option>
+                  </select>
+                </div>
+
+                <div class="col-12">
+                  <textarea class="form-control" name="message" rows="5" placeholder="Describe your symptoms or reason for visit (optional)"></textarea>
+                </div>
+
+                <div class="col-12">
+                  <div class="loading">Loading...</div>
+                  <div class="error-message"></div>
+
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="sent-message">{{ message }}</div>
+                    {% endfor %}
+                  {% endif %}
+
+                  <button type="submit" class="btn btn-appointment w-100">
+                    <i class="bi bi-calendar-plus me-2"></i>Book Appointment
+                  </button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- End Appointment Form -->
+
+      </div>
+
+      <!-- Process Steps -->
+      <div class="process-steps mt-5" data-aos="fade-up" data-aos-delay="300">
+        <div class="row text-center gy-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div class="step-icon">
+                <i class="bi bi-person-fill"></i>
+              </div>
+              <h5>Provide Details</h5>
+              <p>Fill in your personal info and select the department or specialist you need</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-icon">
+                <i class="bi bi-calendar-event"></i>
+              </div>
+              <h5>Pick Date</h5>
+              <p>Choose your preferred date and time for the appointment</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-icon">
+                <i class="bi bi-check-circle"></i>
+              </div>
+              <h5>Receive Confirmation</h5>
+              <p>We’ll confirm your appointment instantly via email or SMS</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-icon">
+                <i class="bi bi-heart-pulse"></i>
+              </div>
+              <h5>Visit & Get Care</h5>
+              <p>Arrive at the clinic on your scheduled date to receive expert care</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Process Steps -->
+
+    </div>
+
+  </section>
+  <!-- End Appointment Section -->
+
+</main>
+
+{% endblock %}

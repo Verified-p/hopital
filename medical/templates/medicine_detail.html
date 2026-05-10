@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-md-5">
+      {% if medicine.image %}
+      <img src="{{ medicine.image.url }}" class="img-fluid rounded" alt="{{ medicine.name }}">
+      {% else %}
+      <img src="{% static 'img/health/default-medicine.jpg' %}" class="img-fluid rounded" alt="{{ medicine.name }}">
+      {% endif %}
+    </div>
+    <div class="col-md-7">
+      <h2>{{ medicine.name }}</h2>
+      <p><strong>Category:</strong> {{ medicine.category }}</p>
+      <p><strong>Manufacturer:</strong> {{ medicine.manufacturer }}</p>
+      <p><strong>Description:</strong> {{ medicine.description }}</p>
+      <p><strong>Price:</strong> KSh {{ medicine.price }}</p>
+
+      {% if medicine.is_expired %}
+      <p class="text-warning"><strong>Note:</strong> This medicine is expired.</p>
+      {% endif %}
+
+      {% if medicine.is_in_stock %}
+      <form action="{% url 'checkout' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="medicine_id" value="{{ medicine.id }}">
+        <button class= "btn btn-primary">Buy Now</button>
+      </form>
+      {% else %}
+      <p class="text-danger">Currently out of stock.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

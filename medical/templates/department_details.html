@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1 class="heading-title">Department Details</h1>
+            <p class="mb-0">
+              Learn more about our specialized medical departments and how our experienced healthcare professionals provide the highest quality care using advanced technology and modern facilities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">Department Details</li>
+        </ol>
+      </div>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <!-- Department Details Section -->
+  <section id="department-details" class="department-details section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+          <div class="department-content" data-aos="fade-right" data-aos-delay="200">
+            <div class="department-header">
+              <div class="specialty-tag">
+                <i class="bi bi-heart-pulse"></i>
+                <span>Cardiology</span>
+              </div>
+              <h1 class="department-name">Comprehensive Heart Care Center</h1>
+              <p class="department-description">
+                Our Cardiology Department is dedicated to the prevention, diagnosis, and treatment of heart and blood vessel diseases. We provide personalized care using advanced cardiac technology and patient-centered approaches.
+              </p>
+            </div>
+
+            <div class="service-highlights" data-aos="fade-up" data-aos-delay="300">
+              <h3>Specialized Services</h3>
+              <div class="highlights-grid">
+                <div class="highlight-card">
+                  <div class="highlight-icon">
+                    <i class="bi bi-activity"></i>
+                  </div>
+                  <h4>Cardiac Surgery</h4>
+                  <p>Our surgical team performs both major and minimally invasive heart procedures to restore normal cardiac function and improve patient outcomes.</p>
+                </div>
+                <div class="highlight-card">
+                  <div class="highlight-icon">
+                    <i class="bi bi-eye"></i>
+                  </div>
+                  <h4>Diagnostic Testing</h4>
+                  <p>We offer advanced diagnostic tools, including ECG, echocardiograms, and stress testing, to ensure accurate heart health assessments.</p>
+                </div>
+                <div class="highlight-card">
+                  <div class="highlight-icon">
+                    <i class="bi bi-shield-plus"></i>
+                  </div>
+                  <h4>Preventive Care</h4>
+                  <p>Our preventive programs focus on lifestyle guidance, nutrition, and early detection to reduce the risk of heart disease.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="cta-section" data-aos="fade-up" data-aos-delay="400">
+              <a href="{% url 'appointment' %}" class="btn-appointment">
+                <i class="bi bi-calendar-plus"></i>
+                <span>Book Appointment</span>
+              </a>
+              <div class="contact-quick">
+                <span class="contact-label">Emergency Line</span>
+                <span class="contact-number">+254 712 345 678</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="visual-section" data-aos="fade-left" data-aos-delay="300">
+            <div class="main-visual">
+              <img src="{% static 'img/health/cardiology-3.webp' %}" alt="Cardiology Department" class="img-fluid department-image">
+              <div class="stats-overlay" data-aos="zoom-in" data-aos-delay="500">
+                <div class="stat-item">
+                  <span class="stat-number">98%</span>
+                  <span class="stat-label">Success Rate</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">12K+</span>
+                  <span class="stat-label">Patients Treated</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="department-details" data-aos="fade-up" data-aos-delay="600">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="details-content">
+              <h3>Expert Care You Can Trust</h3>
+              <p>
+                Our experienced cardiologists and nursing staff provide round-the-clock care for patients with heart-related conditions. From emergency interventions to long-term management, we ensure compassionate and professional service at every step.
+              </p>
+
+              <div class="care-features">
+                <div class="feature-row">
+                  <i class="bi bi-check-circle"></i>
+                  <span>State-of-the-art cardiac catheterization laboratory</span>
+                </div>
+                <div class="feature-row">
+                  <i class="bi bi-check-circle"></i>
+                  <span>Advanced imaging and diagnostic facilities</span>
+                </div>
+                <div class="feature-row">
+                  <i class="bi bi-check-circle"></i>
+                  <span>Minimally invasive surgical procedures</span>
+                </div>
+                <div class="feature-row">
+                  <i class="bi bi-check-circle"></i>
+                  <span>Comprehensive cardiac rehabilitation programs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="info-sidebar" data-aos="fade-left" data-aos-delay="700">
+              <div class="info-card">
+                <h4>Department Hours</h4>
+                <div class="hours-list">
+                  <div class="hours-item">
+                    <span>Monday - Friday</span>
+                    <span>7:00 AM - 8:00 PM</span>
+                  </div>
+                  <div class="hours-item">
+                    <span>Saturday</span>
+                    <span>8:00 AM - 5:00 PM</span>
+                  </div>
+                  <div class="hours-item">
+                    <span>Sunday</span>
+                    <span>Emergency Only</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-card">
+                <h4>Quick Links</h4>
+                <div class="quick-links">
+                  <a href="{% url 'departments' %}">
+                    <i class="bi bi-arrow-right"></i>
+                    <span>All Cardiology Services</span>
+                  </a>
+                  <a href="{% url 'doctors' %}">
+                    <i class="bi bi-arrow-right"></i>
+                    <span>Meet Our Specialists</span>
+                  </a>
+                  <a href="{% url 'insurance' %}">
+                    <i class="bi bi-arrow-right"></i>
+                    <span>Insurance Information</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+  <!-- /Department Details Section -->
+
+</main>
+
+{% endblock %}

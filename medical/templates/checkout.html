@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="max-width: 500px; margin-top: 40px;">
+  <h3 class="text-center mb-4">Proceed to Checkout</h3>
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="form-group mb-3">
+      <label class="form-label">Choose Payment Method:</label><br>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" value="stk_push" id="stk_push" checked>
+        <label class="form-check-label" for="stk_push">Pay via M-Pesa</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="payment_method" value="manual" id="manual">
+        <label class="form-check-label" for="manual">Manual Payment</label>
+      </div>
+    </div>
+
+    <!-- STK PUSH Section -->
+    <div id="stk-section" class="payment-section">
+      <div class="form-group mb-3">
+        <label for="phone_number">Enter your M-Pesa Number (2547...):</label>
+        <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="e.g. 254712345678">
+      </div>
+    </div>
+
+    <!-- MANUAL PAYMENT Section -->
+    <div id="manual-section" class="payment-section" style="display: none;">
+      <p>Send KSh {{ total }} to <strong>0746424180</strong></p>
+      <div class="form-group mb-3">
+        <label>Your Phone Number:</label>
+        <input type="text" name="manual_phone_number" class="form-control" placeholder="">
+      </div>
+      <div class="form-group mb-3">
+        <label>M-Pesa Transaction Code:</label>
+        <input type="text" name="transaction_code" class="form-control" placeholder="e.g. QAD34YYZZ">
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-success w-100">Confirm Payment</button>
+    </div>
+  </form>
+
+  <hr>
+
+  {% with total_items=cart.items.all|length %}
+    <h5>Total: {{ total_items }} item{{ total_items|pluralize }}</h5>
+  {% endwith %}
+
+  <ul class="list-group mb-3">
+    {% for item in cart.items.all %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ item.medicine.name }} (x{{ item.quantity }})
+        <span>KSh {{ item.item_total }}</span>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-center">Your cart is empty.</li>
+    {% endfor %}
+  </ul>
+
+  <h4 class="text-end">Total Amount: <strong>KSh {{ total }}</strong></h4>
+</div>
+
+<script>
+  const stkOption = document.getElementById('stk_push');
+  const manualOption = document.getElementById('manual');
+  const stkSection = document.getElementById('stk-section');
+  const manualSection = document.getElementById('manual-section');
+
+  stkOption.addEventListener('change', () => {
+    stkSection.style.display = 'block';
+    manualSection.style.display = 'none';
+  });
+
+  manualOption.addEventListener('change', () => {
+    stkSection.style.display = 'none';
+    manualSection.style.display = 'block';
+  });
+</script>
+{% endblock %}

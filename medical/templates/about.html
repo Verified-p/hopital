@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block title %}About - MediCure{% endblock %}
+{% load static %}
+
+{% block content %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1 class="heading-title">About MediCure</h1>
+            <p class="mb-0">
+              MediCure is a modern healthcare platform built to transform how people access medical services. 
+              We bring together trusted healthcare professionals, advanced digital systems, and compassionate care 
+              to make quality healthcare more accessible, efficient, and human-centered.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">About</li>
+        </ol>
+      </div>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <!-- About Section -->
+  <section id="about" class="about section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="intro-section">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center" data-aos="fade-up" data-aos-delay="100">
+            <h2>Redefining Modern Healthcare</h2>
+            <p class="lead">
+              Founded in 2025, MediCure is designed for today’s world — fast, reliable, and patient-focused. 
+              We leverage digital technology to simplify hospital operations, improve communication between doctors and patients, 
+              and ensure timely access to care whenever and wherever it’s needed.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-stats-section">
+        <div class="row align-items-center">
+          <div class="col-lg-7" data-aos="fade-right" data-aos-delay="200">
+            <div class="image-gallery">
+              <div class="main-image-container">
+                <img src="{% static 'img/health/facilities-3.webp' %}" class="img-fluid main-image" alt="MediCure modern facility">
+              </div>
+              <div class="secondary-images">
+                <img src="{% static 'img/health/staff-12.webp' %}" class="img-fluid secondary-image" alt="Professional medical team" data-aos="zoom-in" data-aos-delay="400">
+                <img src="{% static 'img/health/consultation-4.webp' %}" class="img-fluid secondary-image" alt="Digital consultation" data-aos="zoom-in" data-aos-delay="500">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5" data-aos="fade-left" data-aos-delay="300">
+            <div class="stats-content">
+              <h3>Innovation That Cares</h3>
+              <p>
+                At MediCure, technology meets compassion. From online appointment systems and digital records 
+                to real-time patient support, we are committed to creating a seamless healthcare experience for both patients and providers.
+              </p>
+
+              <div class="stats-list">
+                <div class="stat-row">
+                  <div class="stat-number">
+                    <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="0" class="purecounter">0</span>
+                  </div>
+                  <div class="stat-info">
+                    <h5>Appointments Booked</h5>
+                    <p>Through our digital healthcare system within the first year</p>
+                  </div>
+                </div>
+
+                <div class="stat-row">
+                  <div class="stat-number">
+                    <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="0" class="purecounter">0</span><span>%</span>
+                  </div>
+                  <div class="stat-info">
+                    <h5>Patient Satisfaction</h5>
+                    <p>Reflecting trust, accessibility, and effective medical care</p>
+                  </div>
+                </div>
+
+                <div class="stat-row">
+                  <div class="stat-number">
+                    <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="0" class="purecounter">0</span>
+                  </div>
+                  <div class="stat-info">
+                    <h5>Specialized Professionals</h5>
+                    <p>Providing expertise across multiple fields of healthcare</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mission-section" data-aos="fade-up" data-aos-delay="400">
+        <div class="row">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="mission-item">
+              <div class="mission-icon">
+                <i class="bi bi-heart"></i>
+              </div>
+              <h4>Our Mission</h4>
+              <p>
+                To make quality healthcare accessible to everyone through innovation, collaboration, 
+                and a deep sense of responsibility toward patient well-being.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="mission-item">
+              <div class="mission-icon">
+                <i class="bi bi-eye"></i>
+              </div>
+              <h4>Our Vision</h4>
+              <p>
+                To build a connected healthcare ecosystem powered by trust, data, and technology — where every patient receives 
+                care that is timely, transparent, and personalized.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="mission-item">
+              <div class="mission-icon">
+                <i class="bi bi-star"></i>
+              </div>
+              <h4>Our Promise</h4>
+              <p>
+                We promise to innovate continually, care genuinely, and serve responsibly — ensuring that healthcare remains 
+                humane, affordable, and accessible to all.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="specialties-section" data-aos="fade-up" data-aos-delay="500">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h3>Our Medical Specialties</h3>
+            <p class="section-description">
+              MediCure brings together experts across various medical fields to provide comprehensive, coordinated, 
+              and high-quality healthcare for every patient.
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="specialty-item">
+              <i class="bi bi-activity"></i>
+              <span>Cardiology</span>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="150">
+            <div class="specialty-item">
+              <i class="bi bi-brain"></i>
+              <span>Neurology</span>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="specialty-item">
+              <i class="bi bi-person-hearts"></i>
+              <span>Pediatrics</span>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="250">
+            <div class="specialty-item">
+              <i class="bi bi-scissors"></i>
+              <span>Surgery</span>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="specialty-item">
+              <i class="bi bi-file-medical"></i>
+              <span>Oncology</span>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="350">
+            <div class="specialty-item">
+              <i class="bi bi-clipboard2-pulse"></i>
+              <span>Emergency</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accreditation-section" data-aos="fade-up" data-aos-delay="600">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h3>Quality You Can Trust</h3>
+            <p class="section-description">
+              MediCure partners with recognized medical boards and accreditation organizations 
+              to maintain the highest standards of safety, ethics, and clinical excellence.
+            </p>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="accreditation-grid">
+              <div class="accreditation-item" data-aos="fade-up" data-aos-delay="100">
+                <img src="{% static 'img/clients/clients-6.webp' %}" class="img-fluid" alt="Healthcare accreditation">
+              </div>
+              <div class="accreditation-item" data-aos="fade-up" data-aos-delay="150">
+                <img src="{% static 'img/clients/clients-7.webp' %}" class="img-fluid" alt="Medical certification">
+              </div>
+              <div class="accreditation-item" data-aos="fade-up" data-aos-delay="200">
+                <img src="{% static 'img/clients/clients-8.webp' %}" class="img-fluid" alt="Quality assurance">
+              </div>
+              <div class="accreditation-item" data-aos="fade-up" data-aos-delay="250">
+                <img src="{% static 'img/clients/clients-9.webp' %}" class="img-fluid" alt="Healthcare excellence">
+              </div>
+              <div class="accreditation-item" data-aos="fade-up" data-aos-delay="300">
+                <img src="{% static 'img/clients/clients-10.webp' %}" class="img-fluid" alt="Medical standards">
+              </div>
+              <div class="accreditation-item" data-aos="fade-up" data-aos-delay="350">
+                <img src="{% static 'img/clients/clients-11.webp' %}" class="img-fluid" alt="Healthcare certification">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+{% endblock %}

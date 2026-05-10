@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Schedule Your Vaccination</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="vaccine">Select Vaccine</label>
+        <select class="form-control" id="vaccine" name="vaccine" required>
+          <option value="COVID-19">COVID-19 Vaccine</option>
+          <option value="Flu">Flu Vaccine</option>
+          <option value="Hepatitis">Hepatitis Vaccine</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="date">Preferred Date</label>
+        <input type="date" class="form-control" id="date" name="date" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Schedule Shot</button>
+    </form>
+  </div>
+
+  <!-- Success Popup -->
+  {% if form_submitted %}
+    <script type="text/javascript">
+      alert("Your vaccination appointment has been successfully scheduled. Please download your form and proceed to the vaccination room.");
+      window.location.href = "{% url 'download_vaccine_form' vaccine_id=form_id %}";  // Redirect to download the form
+    </script>
+  {% endif %}
+{% endblock %}
