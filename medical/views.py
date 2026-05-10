@@ -19,7 +19,7 @@ import os
 import json
 import random
 
-from django.http import HttpResponse
+
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from .models import TestOrder
@@ -32,13 +32,11 @@ from django.contrib.auth.decorators import login_required
 
 
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
 
 
-
-from django.http import JsonResponse, HttpResponseForbidden
+from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import PatientRecord
 from .forms import PatientRecordForm
@@ -673,7 +671,6 @@ def signin(request):
 
 
 
-# Signout View
 def logout_view(request):
     auth_logout(request)
     return redirect('login')
