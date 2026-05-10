@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 
+
 # from dotenv import load_dotenv
 # load_dotenv()
 
@@ -8,12 +9,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-dev-key")
 
-DEBUG = False
+
+DEBUG = os.getenv("VERCEL") is None
 
 ALLOWED_HOSTS = [
-    ".vercel.app",
-    "localhost",
-    "127.0.0.1"
+    '127.0.0.1',
+    'localhost',
+    '.vercel.app',
 ]
 
 
