@@ -461,7 +461,7 @@ def verify_manual_payment(transaction_code):
 
 
 # Initialize client using .env API key
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def index(request):
