@@ -32,7 +32,8 @@ from django.contrib.auth.decorators import login_required
 
 
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import logout as auth_logout
 
 
 
@@ -145,8 +146,7 @@ def doctors(request):
 
 
 # Create your views here.
-def index(request):
-    return render(request, 'index.html')
+
 @login_required
 def about(request):
     return render(request, 'about.html')
@@ -157,9 +157,8 @@ def department_details(request):
 @login_required
 def department_details(request):
     return render(request, 'departments.html')
-@login_required
-def doctors(request):
-    return render(request, 'doctors.html')
+
+
 @login_required
 def faq(request):
     return render(request, 'faq.html')
@@ -461,7 +460,13 @@ def verify_manual_payment(transaction_code):
 
 
 # Initialize client using .env API key
-# client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+
+def get_openai_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        return None
+    return OpenAI(api_key=api_key)
 
 
 def index(request):
@@ -473,54 +478,58 @@ def ai_analysis_page(request):
     """Loads the AI Health Analysis page."""
     return render(request, "ai_analysis.html")
 
+@csrf_exempt
+def ai_analysis(request):
+    if request.method == "GET":
+        return render(request, "ai_analysis.html")
 
-# @csrf_exempt
-# def ai_analysis(request):
-#     """Handles both GET and POST for AI analysis."""
-#     if request.method == "GET":
-#         return render(request, "ai_analysis.html")
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request method."}, status=405)
 
-#     if request.method != "POST":
-#         return JsonResponse({"error": "Invalid request method."}, status=405)
+    try:
+        client = get_openai_client()
 
-#     try:
-#         data = json.loads(request.body.decode("utf-8"))
-#         temperature = data.get("temperature")
-#         heart_rate = data.get("heart_rate")
-#         systolic = data.get("systolic")
-#         diastolic = data.get("diastolic")
-#         symptoms = data.get("symptoms")
+        if client is None:
+            return JsonResponse({
+                "error": "AI service is not configured on server."
+            }, status=500)
 
-#         if not all([temperature, heart_rate, systolic, diastolic]):
-#             return JsonResponse({"error": "Please fill in all required fields."}, status=400)
+        data = json.loads(request.body.decode("utf-8"))
 
-#         prompt = f"""
-#         The patient provided:
-#         - Temperature: {temperature}°C
-#         - Heart Rate: {heart_rate} bpm
-#         - Blood Pressure: {systolic}/{diastolic} mmHg
-#         - Symptoms: {symptoms}
+        temperature = data.get("temperature")
+        heart_rate = data.get("heart_rate")
+        systolic = data.get("systolic")
+        diastolic = data.get("diastolic")
+        symptoms = data.get("symptoms", "")
 
-#         As a virtual medical assistant:
-#         1. Analyze these readings.
-#         2. Explain what they might mean.
-#         3. Suggest next steps or treatments.
-#         4. Warn if the situation seems urgent.
-#         """
+        if not all([temperature, heart_rate, systolic, diastolic]):
+            return JsonResponse({"error": "Missing required fields."}, status=400)
 
-#         response = client.chat.completions.create(
-#             model="gpt-4o-mini",
-#             messages=[
-#                 {"role": "system", "content": "You are a friendly and accurate AI medical assistant."},
-#                 {"role": "user", "content": prompt}
-#             ]
-#         )
+        prompt = f"""
+        Patient data:
+        Temperature: {temperature}
+        Heart Rate: {heart_rate}
+        Blood Pressure: {systolic}/{diastolic}
+        Symptoms: {symptoms}
 
-#         analysis = response.choices[0].message.content.strip()
-#         return JsonResponse({"analysis": analysis})
+        Provide medical-style analysis and advice.
+        """
 
-#     except Exception as e:
-#         return JsonResponse({"error": str(e)}, status=500)
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a medical assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        return JsonResponse({
+            "analysis": response.choices[0].message.content.strip()
+        })
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+    
 @login_required
 def schedule_shot(request):
     if request.method == 'POST':
@@ -665,8 +674,8 @@ def signin(request):
 
 
 # Signout View
-def logout(request):
-    logout(request)
+def logout_view(request):
+    auth_logout(request)
     return redirect('login')
 
 
