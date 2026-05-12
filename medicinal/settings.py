@@ -15,10 +15,9 @@ DEBUG = os.getenv("VERCEL") is None
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
     ".vercel.app",
-    "hopital.vercel.app",
+    "localhost",
+    "127.0.0.1"
 ]
 
 
