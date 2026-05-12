@@ -12,6 +12,7 @@ SECRET_KEY = os.getenv(
 )
 
 DEBUG = os.getenv("VERCEL") is None
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
