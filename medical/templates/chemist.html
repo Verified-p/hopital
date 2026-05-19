@@ -4,115 +4,277 @@
 
 <main class="main">
 
-  <!-- Page Title -->
+  <!-- ========================= -->
+  <!-- PAGE TITLE -->
+  <!-- ========================= -->
   <div class="page-title text-center py-5 bg-light">
-    <h1>Online Chemist</h1>
-    <p>Browse and purchase medicines safely and conveniently.</p>
+    <div class="container">
+      <h1 class="fw-bold">Online Chemist</h1>
+      <p class="text-muted">
+        Browse and purchase medicines safely and conveniently.
+      </p>
+    </div>
   </div>
 
   <div class="container py-5">
 
-    <!-- Search and Filter -->
-    <form method="get" class="mb-4">
+    <!-- ========================= -->
+    <!-- SEARCH & FILTER -->
+    <!-- ========================= -->
+    <form method="GET" class="mb-5">
+
       <div class="row g-3 align-items-end">
 
-        <div class="col-md-5">
-          <label class="form-label">Search Medicines</label>
-          <input type="text" name="search" class="form-control"
-                 placeholder="Enter medicine name..."
-                 value="{{ search_query|default:'' }}">
+        <!-- Search -->
+        <div class="col-lg-5 col-md-6">
+          <label class="form-label fw-semibold">
+            Search Medicines
+          </label>
+
+          <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Enter medicine name..."
+            value="{{ search_query|default:'' }}"
+          >
         </div>
 
-        <div class="col-md-4">
-          <label class="form-label">Category</label>
+        <!-- Category -->
+        <div class="col-lg-4 col-md-6">
+          <label class="form-label fw-semibold">
+            Category
+          </label>
+
           <select name="category" class="form-select">
 
-            <option value="All" {% if category_filter == 'All' or not category_filter %}selected{% endif %}>All Categories</option>
+            <option value="All"
+              {% if category_filter == 'All' or not category_filter %}
+                selected
+              {% endif %}
+            >
+              All Categories
+            </option>
 
-            <option value="Painkiller" {% if category_filter == 'Painkiller' %}selected{% endif %}>Painkiller</option>
-            <option value="Antibiotic" {% if category_filter == 'Antibiotic' %}selected{% endif %}>Antibiotic</option>
-            <option value="Vitamin" {% if category_filter == 'Vitamin' %}selected{% endif %}>Vitamin</option>
-            <option value="Antiseptic" {% if category_filter == 'Antiseptic' %}selected{% endif %}>Antiseptic</option>
-            <option value="Other" {% if category_filter == 'Other' %}selected{% endif %}>Other</option>
+            <option value="Painkiller"
+              {% if category_filter == 'Painkiller' %}
+                selected
+              {% endif %}
+            >
+              Painkiller
+            </option>
+
+            <option value="Antibiotic"
+              {% if category_filter == 'Antibiotic' %}
+                selected
+              {% endif %}
+            >
+              Antibiotic
+            </option>
+
+            <option value="Vitamin"
+              {% if category_filter == 'Vitamin' %}
+                selected
+              {% endif %}
+            >
+              Vitamin
+            </option>
+
+            <option value="Antiseptic"
+              {% if category_filter == 'Antiseptic' %}
+                selected
+              {% endif %}
+            >
+              Antiseptic
+            </option>
+
+            <option value="Other"
+              {% if category_filter == 'Other' %}
+                selected
+              {% endif %}
+            >
+              Other
+            </option>
 
           </select>
         </div>
 
-        <div class="col-md-3">
-          <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+        <!-- Button -->
+        <div class="col-lg-3 col-md-12">
+          <button type="submit" class="btn btn-primary w-100">
+            Apply Filters
+          </button>
         </div>
 
       </div>
+
     </form>
 
-    <!-- Medicines Grid -->
+    <!-- ========================= -->
+    <!-- MEDICINES GRID -->
+    <!-- ========================= -->
     <div class="row g-4">
 
       {% for medicine in medicines %}
 
-      <div class="col-md-3 col-sm-6">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
 
         <div class="card h-100 shadow-sm border-0">
 
-          <!-- IMAGE (SAFE FOR VERCEL) -->
+          <!-- ========================= -->
+          <!-- MEDICINE IMAGE -->
+          <!-- ========================= -->
+
           {% if medicine.image and medicine.image.name %}
-            <img src="{{ medicine.image.url }}" class="card-img-top" alt="{{ medicine.name }}">
+
+            <img
+              src="{{ medicine.image.url }}"
+              class="card-img-top"
+              alt="{{ medicine.name }}"
+              style="height: 220px; object-fit: cover;"
+              onerror="this.onerror=null; this.src='{% static 'img/health/default-medicine.jpg' %}';"
+            >
+
           {% else %}
-            <img src="{% static 'img/health/default-medicine.jpg' %}" class="card-img-top" alt="{{ medicine.name }}">
+
+            <img
+              src="{% static 'img/health/default-medicine.jpg' %}"
+              class="card-img-top"
+              alt="{{ medicine.name }}"
+              style="height: 220px; object-fit: cover;"
+            >
+
           {% endif %}
 
-          <div class="card-body">
-            <h5 class="card-title">{{ medicine.name }}</h5>
+          <!-- ========================= -->
+          <!-- CARD BODY -->
+          <!-- ========================= -->
+          <div class="card-body d-flex flex-column">
 
+            <!-- Name -->
+            <h5 class="card-title fw-bold">
+              {{ medicine.name }}
+            </h5>
+
+            <!-- Category -->
             <p class="text-muted small mb-2">
               {{ medicine.category|default:"Other" }}
             </p>
 
-            <p class="text-truncate">
-              {{ medicine.description|default:"No description available"|truncatewords:12 }}
+            <!-- Description -->
+            <p class="card-text text-muted small">
+              {{ medicine.description|default:"No description available."|truncatewords:15 }}
             </p>
 
-            <p><strong>KSh {{ medicine.price|default:"0" }}</strong></p>
+            <!-- Price -->
+            <h6 class="fw-bold mt-auto">
+              KSh {{ medicine.price|default:"0" }}
+            </h6>
 
-            <!-- STOCK CHECK (SAFE) -->
-            {% if medicine.stock_quantity and medicine.stock_quantity > 0 %}
-              <span class="badge bg-success">In Stock</span>
-            {% else %}
-              <span class="badge bg-danger">Out of Stock</span>
-            {% endif %}
+            <!-- ========================= -->
+            <!-- STOCK STATUS -->
+            <!-- ========================= -->
+            <div class="mt-2">
 
-            <!-- EXPIRY CHECK (SAFE - avoids crashing if method fails) -->
-            {% if medicine.expiry_date %}
-              {% if medicine.is_expired %}
-                <span class="badge bg-warning text-dark">Expired</span>
+              {% if medicine.stock_quantity and medicine.stock_quantity > 0 %}
+                <span class="badge bg-success">
+                  In Stock
+                </span>
+              {% else %}
+                <span class="badge bg-danger">
+                  Out of Stock
+                </span>
               {% endif %}
-            {% endif %}
+
+              <!-- Expiry -->
+              {% if medicine.expiry_date %}
+                {% if medicine.is_expired %}
+                  <span class="badge bg-warning text-dark">
+                    Expired
+                  </span>
+                {% endif %}
+              {% endif %}
+
+            </div>
 
           </div>
 
-          <div class="card-footer bg-white border-0 text-center">
+          <!-- ========================= -->
+          <!-- CARD FOOTER -->
+          <!-- ========================= -->
+          <div class="card-footer bg-white border-0">
 
-            <a href="{% url 'medicine_detail' medicine.id %}"
-               class="btn btn-outline-primary btn-sm w-100">
-               View Details
-            </a>
+            <div class="d-grid gap-2">
 
-            <a href="{% url 'add_to_cart' medicine.id %}"
-               class="btn btn-sm btn-outline-success w-100 mt-2">
-               Add to Cart
-            </a>
+              <a
+                href="{% url 'medicine_detail' medicine.id %}"
+                class="btn btn-outline-primary btn-sm"
+              >
+                View Details
+              </a>
+
+              {% if medicine.stock_quantity and medicine.stock_quantity > 0 %}
+
+                <a
+                  href="{% url 'add_to_cart' medicine.id %}"
+                  class="btn btn-success btn-sm"
+                >
+                  Add to Cart
+                </a>
+
+              {% else %}
+
+                <button
+                  class="btn btn-secondary btn-sm"
+                  disabled
+                >
+                  Out of Stock
+                </button>
+
+              {% endif %}
+
+            </div>
 
           </div>
 
         </div>
+
       </div>
 
       {% empty %}
-        <p class="text-center text-muted">No medicines available.</p>
+
+      <!-- ========================= -->
+      <!-- EMPTY STATE -->
+      <!-- ========================= -->
+      <div class="col-12">
+
+        <div class="text-center py-5">
+
+          <img
+            src="{% static 'img/health/default-medicine.jpg' %}"
+            alt="No Medicines"
+            width="120"
+            class="mb-3 opacity-50"
+          >
+
+          <h4 class="fw-bold text-muted">
+            No medicines available
+          </h4>
+
+          <p class="text-muted">
+            Medicines will appear here once added.
+          </p>
+
+        </div>
+
+      </div>
+
       {% endfor %}
 
     </div>
+
   </div>
+
 </main>
 
 {% endblock %}

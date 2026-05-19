@@ -173,10 +173,11 @@ STATICFILES_STORAGE = (
 # ================================
 # MEDIA FILES
 # ================================
-MEDIA_URL = '/media/'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
-MEDIA_ROOT = BASE_DIR / 'media'
-
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
 # ================================
 # DEFAULT PRIMARY KEY
