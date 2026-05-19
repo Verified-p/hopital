@@ -241,26 +241,26 @@ def doctor_profile(request, doctor_id):
 def chemist(request):
     medicines = Medicine.objects.all()
 
-    search_query = request.GET.get("search", "")
-    category_filter = request.GET.get("category", "")
+    search_query = request.GET.get("search", "").strip()
+    category_filter = request.GET.get("category", "").strip()
 
     if search_query:
         medicines = medicines.filter(
-            Q(name__icontains=search_query)
-            | Q(description__icontains=search_query)
-            | Q(manufacturer__icontains=search_query)
+            Q(name__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(manufacturer__icontains=search_query)
         )
 
-    if category_filter:
-        medicines = medicines.filter(category__icontains=category_filter)
+    if category_filter and category_filter != "All":
+        medicines = medicines.filter(category=category_filter)
 
-    return render(
-        request,
-        "chemist.html",
-        {
-            "medicines": medicines,
-        },
-    )
+    context = {
+        "medicines": medicines,
+        "search_query": search_query,
+        "category_filter": category_filter,
+    }
+
+    return render(request, "chemist.html", context)
 
 
 @login_required
