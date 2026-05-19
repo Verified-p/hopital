@@ -76,6 +76,7 @@ class Doctor(models.Model):
 
 
 
+
 class Medicine(models.Model):
     CATEGORY_CHOICES = [
         ('Painkiller', 'Painkiller'),
@@ -96,25 +97,29 @@ class Medicine(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # 👇 Added fields for payment routing
-    seller_name = models.CharField(max_length=100, help_text="Name of the doctor or chemist selling this medicine.")
-    seller_mpesa_number = models.CharField(
-        max_length=15,
-        help_text="The M-Pesa number that will receive payment for this medicine (e.g., 254712345678)."
-    )
+    seller_name = models.CharField(max_length=100)
+    seller_mpesa_number = models.CharField(max_length=15)
 
     def __str__(self):
         return f"{self.name} - Sold by {self.seller_name}"
 
+    # ✅ SAFE PROPERTY (IMPORTANT FIX)
+    @property
     def is_in_stock(self):
-        return self.stock_quantity > 0
+        try:
+            return self.stock_quantity > 0
+        except:
+            return False
 
+    # ✅ SAFE PROPERTY (FIXED FOR VERCEL)
+    @property
     def is_expired(self):
-        if self.expiry_date:
-            return self.expiry_date < timezone.now().date()
-        return False
-
-
+        try:
+            if self.expiry_date:
+                return self.expiry_date < timezone.now().date()
+            return False
+        except:
+            return False
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
