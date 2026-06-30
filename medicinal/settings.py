@@ -242,6 +242,7 @@ MPESA_CALLBACK_URL = os.getenv(
 )
 
 
+
 # ================================
 # SECURITY HEADERS (PRODUCTION)
 # ================================
@@ -261,3 +262,11 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
 
     CSRF_COOKIE_SECURE = True
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://fleetmanage-theta.vercel.app",
+]
+
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
